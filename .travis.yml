@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "node"
+install:
+  - yarn
+script:
+  - yarn lint
+deploy:
+  skip_cleanup: true
+  on:
+    branch: master
+  provider: script
+  script:
+    - yarn build && now build --public --name retrowave-redux --token $NOW_TOKEN && now alias --token $NOW_TOKEN --force
