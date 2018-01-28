@@ -7,6 +7,7 @@ import {
   CHANGE_PLAY_STATUS,
   CHANGE_TRACK_DURATION,
   CHANGE_TRACK_POSITION,
+  CHANGE_VOLUME,
   SUCCESS,
 } from '../constants/actionTypes';
 
@@ -16,6 +17,7 @@ const defaultState = {
   tracks: [],
   currentDuration: 0,
   currentPosition: 0,
+  volume: 50,
 };
 
 export default (state = defaultState, action) => {
@@ -77,6 +79,12 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         currentPosition: payload.position,
+      };
+
+    case CHANGE_VOLUME:
+      return {
+        ...state,
+        volume: payload.volume,
       };
 
     default:

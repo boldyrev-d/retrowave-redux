@@ -15,6 +15,7 @@ import {
   changePlayStatus,
   changeDuration,
   changePosition,
+  changeVolume,
 } from './AC';
 
 const Wrapper = styled.div`
@@ -32,23 +33,38 @@ class App extends Component {
       this.props.firstLoad();
     }
   }
+
+  handleVolume = (ev) => {
+    const volume = parseInt(ev.target.value, 10);
+    this.props.changeVolume(volume);
+  };
+
   render() {
     const {
-      currentTrack, currentPosition, currentDuration, playStatus, tracks,
+      currentTrack,
+      currentPosition,
+      currentDuration,
+      playStatus,
+      tracks,
+      volume,
     } = this.props;
+
+    const soundComponent = tracks.length ? (
+      <Sound
+        url={`${RETRO_URL}${tracks[currentTrack].streamUrl}`}
+        playStatus={playStatus}
+        volume={this.props.volume}
+        // FIXME: get more accuracy
+        onPlaying={this.props.changePosition}
+        onLoad={this.props.changeDuration}
+        onFinishedPlaying={this.handleNext}
+      />
+    ) : null;
 
     return (
       <Wrapper>
-        {tracks.length && (
-          <Sound
-            url={`${RETRO_URL}${tracks[currentTrack].streamUrl}`}
-            playStatus={playStatus}
-            // FIXME: get more accuracy
-            onPlaying={this.props.changePosition}
-            onLoad={this.props.changeDuration}
-            onFinishedPlaying={this.handleNext}
-          />
-        )}
+        {soundComponent}
+
         <div>
           <button disabled={!currentTrack} onClick={this.props.switchToPreviousTrack}>
             PREV
@@ -58,8 +74,20 @@ class App extends Component {
           </button>
           <button onClick={this.props.switchToNextTrack}>NEXT</button>
         </div>
+
         <div>
           <span>{msToTime(currentPosition)}</span> / <span>{msToTime(currentDuration)}</span>
+        </div>
+
+        <div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            step="1"
+            value={volume}
+            onChange={this.handleVolume}
+          />
         </div>
       </Wrapper>
     );
@@ -69,7 +97,7 @@ class App extends Component {
 export default connect(
   (state) => {
     const {
-      currentTrack, playStatus, tracks, currentDuration, currentPosition,
+      currentTrack, playStatus, tracks, currentDuration, currentPosition, volume,
     } = state;
 
     return {
@@ -78,6 +106,7 @@ export default connect(
       tracks,
       currentDuration,
       currentPosition,
+      volume,
     };
   },
   {
@@ -87,5 +116,6 @@ export default connect(
     changePlayStatus,
     changeDuration,
     changePosition,
+    changeVolume,
   },
 )(App);
