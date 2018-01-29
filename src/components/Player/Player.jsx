@@ -105,12 +105,13 @@ const Title = styled.div`
 
 const Time = styled.div`
   margin: 20px 0 15px;
-  font-size: 1.25rem;
   font-weight: bold;
   font-style: italic;
 `;
 
-const TimePosition = styled.span``;
+const TimePosition = styled.span`
+  font-size: 1.25rem;
+`;
 
 const TimeDuration = styled.span`
   color: #9cf1ff;
@@ -151,7 +152,7 @@ const Volume = styled.input`
     transition: background-color 0.1s linear;
   }
 
-  &::-webkit-slider-thumb:before {
+  &::-webkit-slider-thumb::before {
     pointer-events: none;
     content: '';
     position: absolute;
