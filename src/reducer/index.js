@@ -13,7 +13,7 @@ import {
 
 const defaultState = {
   currentTrack: 0,
-  playStatus: playStatuses.play,
+  playStatus: playStatuses.pause,
   tracks: [],
   currentDuration: 0,
   currentPosition: 0,

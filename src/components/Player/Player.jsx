@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { msToTime } from '../../utils/displayUtils';
 
 import cassette from './cassette.png';
+import cassetteReel from './cassette-reel.png';
 import prevIcon from './prev.svg';
 import nextIcon from './next.svg';
 import playIcon from './play.svg';
@@ -173,6 +174,36 @@ const Volume = styled.input`
   }
 `;
 
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const CassetteReelLeft = styled.div`
+  position: absolute;
+  z-index: 90;
+  top: 65px;
+  left: 72px;
+  width: 34px;
+  height: 39px;
+  border-radius: 50%;
+  background: url(${props => props.image}) no-repeat;
+  color: #16181a;
+  clip-path: circle(50% at 50% 50%);
+  animation: ${spin} 4s linear infinite;
+  animation-play-state: ${props =>
+    (props.playStatus === playStatuses.pause ? 'paused' : 'running')};
+`;
+
+const CassetteReelRight = CassetteReelLeft.extend`
+  left: 204px;
+`;
+
 const Player = ({
   cover,
   currentTrack,
@@ -187,6 +218,8 @@ const Player = ({
     <Cassette>
       <CassetteCover bg={cover} />
       <CassetteBody bg={cassette} />
+      <CassetteReelLeft image={cassetteReel} playStatus={playStatus} />
+      <CassetteReelRight image={cassetteReel} playStatus={playStatus} />
     </Cassette>
 
     <Controls>
