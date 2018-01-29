@@ -6,8 +6,11 @@ import nextTrack from '../middlewares/nextTrack';
 
 const middlewares = [nextTrack, callAPI];
 
-// eslint-disable-next-line no-underscore-dangle
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers =
+  process.env.NODE_ENV === 'development'
+    ? // eslint-disable-next-line no-underscore-dangle
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+    : compose;
 
 if (process.env.NODE_ENV === 'development') {
   const logger = createLogger({
