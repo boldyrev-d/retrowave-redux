@@ -7,6 +7,8 @@ import {
   CHANGE_TRACK_DURATION,
   CHANGE_TRACK_POSITION,
   CHANGE_VOLUME,
+  VOLUME_UP,
+  VOLUME_DOWN,
 } from '../constants/actionTypes';
 
 export const firstLoad = () => ({
@@ -40,4 +42,12 @@ export const changePosition = trackObject => ({
 export const changeVolume = volume => ({
   type: CHANGE_VOLUME,
   payload: { volume },
+});
+
+export const volumeUp = () => ({
+  type: VOLUME_UP,
+});
+
+export const volumeDown = () => ({
+  type: VOLUME_DOWN,
 });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
 
@@ -11,7 +11,14 @@ import nextIcon from './next.svg';
 import playIcon from './play.svg';
 import pauseIcon from './pause.svg';
 
-import { switchToPreviousTrack, switchToNextTrack, changePlayStatus, changeVolume } from '../../AC';
+import {
+  switchToPreviousTrack,
+  switchToNextTrack,
+  changePlayStatus,
+  changeVolume,
+  volumeUp,
+  volumeDown,
+} from '../../AC';
 
 import { RETRO_URL } from '../../constants/urlConstants';
 import { playStatuses } from '../../constants/playerConstants';
@@ -204,58 +211,97 @@ const CassetteReelRight = CassetteReelLeft.extend`
   left: 204px;
 `;
 
-const Player = ({
-  cover,
-  currentTrack,
-  playStatus,
-  currentPosition,
-  currentDuration,
-  volume,
-  title,
-  ...props
-}) => (
-  <Wrapper>
-    <Cassette>
-      <CassetteCover bg={cover} />
-      <CassetteBody bg={cassette} />
-      <CassetteReelLeft image={cassetteReel} playStatus={playStatus} />
-      <CassetteReelRight image={cassetteReel} playStatus={playStatus} />
-    </Cassette>
+class Player extends Component {
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
 
-    <Controls>
-      <ControlsButton
-        disabled={!currentTrack}
-        icon={prevIcon}
-        onClick={props.switchToPreviousTrack}
-      />
-      <ControlsButton
-        icon={playStatus === playStatuses.play ? pauseIcon : playIcon}
-        onClick={props.changePlayStatus}
-        autoFocus
-      />
-      <ControlsButton icon={nextIcon} onClick={props.switchToNextTrack} />
-    </Controls>
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
 
-    <Title>{title}</Title>
+  handleKeyDown = (ev) => {
+    if (ev.key === 'ArrowRight') {
+      ev.preventDefault();
+      this.props.switchToNextTrack();
+    }
 
-    <Time>
-      <TimePosition>{msToTime(currentPosition)}</TimePosition>
-      <TimeDuration> / {msToTime(currentDuration)}</TimeDuration>
-    </Time>
+    if (ev.key === 'ArrowLeft') {
+      ev.preventDefault();
+      this.props.switchToPreviousTrack();
+    }
 
-    <Volume
-      type="range"
-      min="0"
-      max="100"
-      step="1"
-      value={volume}
-      onChange={(ev) => {
-        const volumeValue = parseInt(ev.target.value, 10);
-        props.changeVolume(volumeValue);
-      }}
-    />
-  </Wrapper>
-);
+    if (ev.key === 'ArrowUp') {
+      ev.preventDefault();
+      this.props.volumeUp();
+    }
+
+    if (ev.key === 'ArrowDown') {
+      ev.preventDefault();
+      this.props.volumeDown();
+    }
+
+    if (ev.code === 'Space') {
+      ev.preventDefault();
+      this.props.changePlayStatus();
+    }
+  };
+
+  render() {
+    const {
+      cover,
+      currentTrack,
+      playStatus,
+      currentPosition,
+      currentDuration,
+      volume,
+      title,
+    } = this.props;
+
+    return (
+      <Wrapper>
+        <Cassette>
+          <CassetteCover bg={cover} />
+          <CassetteBody bg={cassette} />
+          <CassetteReelLeft image={cassetteReel} playStatus={playStatus} />
+          <CassetteReelRight image={cassetteReel} playStatus={playStatus} />
+        </Cassette>
+
+        <Controls>
+          <ControlsButton
+            disabled={!currentTrack}
+            icon={prevIcon}
+            onClick={this.props.switchToPreviousTrack}
+          />
+          <ControlsButton
+            icon={playStatus === playStatuses.play ? pauseIcon : playIcon}
+            onClick={this.props.changePlayStatus}
+          />
+          <ControlsButton icon={nextIcon} onClick={this.props.switchToNextTrack} />
+        </Controls>
+
+        <Title>{title}</Title>
+
+        <Time>
+          <TimePosition>{msToTime(currentPosition)}</TimePosition>
+          <TimeDuration> / {msToTime(currentDuration)}</TimeDuration>
+        </Time>
+
+        <Volume
+          type="range"
+          min="0"
+          max="100"
+          step="1"
+          value={volume}
+          onChange={(ev) => {
+            const volumeValue = parseInt(ev.target.value, 10);
+            this.props.changeVolume(volumeValue);
+          }}
+        />
+      </Wrapper>
+    );
+  }
+}
 
 export default connect(
   (state) => {
@@ -278,5 +324,7 @@ export default connect(
     switchToNextTrack,
     changePlayStatus,
     changeVolume,
+    volumeUp,
+    volumeDown,
   },
 )(Player);

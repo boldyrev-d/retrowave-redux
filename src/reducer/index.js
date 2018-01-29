@@ -8,6 +8,8 @@ import {
   CHANGE_TRACK_DURATION,
   CHANGE_TRACK_POSITION,
   CHANGE_VOLUME,
+  VOLUME_UP,
+  VOLUME_DOWN,
   SUCCESS,
 } from '../constants/actionTypes';
 
@@ -85,6 +87,18 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         volume: payload.volume,
+      };
+
+    case VOLUME_UP:
+      return {
+        ...state,
+        volume: state.volume === 100 ? state.volume : state.volume + 1,
+      };
+
+    case VOLUME_DOWN:
+      return {
+        ...state,
+        volume: state.volume === 0 ? state.volume : state.volume - 1,
       };
 
     default:
