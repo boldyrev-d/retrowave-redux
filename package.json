@@ -23,7 +23,7 @@
     "lint:js": "eslint --ext .jsx --ext .js src/",
     "lint:sc": "stylelint ./src/**/*.jsx",
     "lint:css": "stylelint ./src/**/*.css --config ./stylelintCSSConfig.json",
-    "lint": "yarn lint:js & yarn lint:sc & yarn lint:css",
+    "lint": "yarn lint:js && yarn lint:sc && yarn lint:css",
     "prepush": "yarn lint"
   },
   "devDependencies": {
