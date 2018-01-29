@@ -217,7 +217,8 @@ const Player = ({
       step="1"
       value={volume}
       onChange={(ev) => {
-        props.changeVolume(parseInt(ev.target.value, 10));
+        const volumeValue = parseInt(ev.target.value, 10);
+        props.changeVolume(volumeValue);
       }}
     />
   </Wrapper>
