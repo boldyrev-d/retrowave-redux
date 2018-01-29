@@ -3,98 +3,116 @@ import * as urls from '../constants/urlConstants';
 import * as types from '../constants/actionTypes';
 
 describe('ACTION CREATORS', () => {
-  it('should create an action to init load first track', () => {
-    const expectedAction = {
-      type: types.FIRST_LOAD,
-      callAPI: `${urls.RETRO_API_URL}/tracks?limit=1`,
-    };
+  describe('firstLoad', () => {
+    it('should create an action to init load first track', () => {
+      const expectedAction = {
+        type: types.FIRST_LOAD,
+        callAPI: `${urls.RETRO_API_URL}/tracks?limit=1`,
+      };
 
-    expect(actions.firstLoad()).toEqual(expectedAction);
+      expect(actions.firstLoad()).toEqual(expectedAction);
+    });
   });
 
-  it('should create an action to switch to previous track', () => {
-    const expectedAction = {
-      type: types.SWITCH_TO_PREVIOUS_TRACK,
-    };
+  describe('switchToPreviousTrack', () => {
+    it('should create an action to switch to previous track', () => {
+      const expectedAction = {
+        type: types.SWITCH_TO_PREVIOUS_TRACK,
+      };
 
-    expect(actions.switchToPreviousTrack()).toEqual(expectedAction);
+      expect(actions.switchToPreviousTrack()).toEqual(expectedAction);
+    });
   });
 
-  it('should create an action to switch to next track', () => {
-    const expectedAction = {
-      type: types.SWITCH_TO_NEXT_TRACK,
-    };
+  describe('switchToNextTrack', () => {
+    it('should create an action to switch to next track', () => {
+      const expectedAction = {
+        type: types.SWITCH_TO_NEXT_TRACK,
+      };
 
-    expect(actions.switchToNextTrack()).toEqual(expectedAction);
+      expect(actions.switchToNextTrack()).toEqual(expectedAction);
+    });
   });
 
-  it('should create an action to change play status', () => {
-    const expectedAction = {
-      type: types.CHANGE_PLAY_STATUS,
-    };
+  describe('changePlayStatus', () => {
+    it('should create an action to change play status', () => {
+      const expectedAction = {
+        type: types.CHANGE_PLAY_STATUS,
+      };
 
-    expect(actions.changePlayStatus()).toEqual(expectedAction);
+      expect(actions.changePlayStatus()).toEqual(expectedAction);
+    });
   });
 
-  it('should create an action to change volume to 66', () => {
-    const expectedAction = {
-      type: types.CHANGE_VOLUME,
-      payload: { volume: 66 },
-    };
+  describe('changeVolume', () => {
+    it('should create an action to change volume to 66', () => {
+      const expectedAction = {
+        type: types.CHANGE_VOLUME,
+        payload: { volume: 66 },
+      };
 
-    expect(actions.changeVolume(66)).toEqual(expectedAction);
+      expect(actions.changeVolume(66)).toEqual(expectedAction);
+    });
+
+    it('should create an action to change volume to -66', () => {
+      const expectedAction = {
+        type: types.CHANGE_VOLUME,
+        payload: { volume: -66 },
+      };
+
+      expect(actions.changeVolume(-66)).toEqual(expectedAction);
+    });
   });
 
-  it('should create an action to change volume to -66', () => {
-    const expectedAction = {
-      type: types.CHANGE_VOLUME,
-      payload: { volume: -66 },
-    };
+  describe('volumeUp', () => {
+    it('should create an action to volume up', () => {
+      const expectedAction = {
+        type: types.VOLUME_UP,
+      };
 
-    expect(actions.changeVolume(-66)).toEqual(expectedAction);
+      expect(actions.volumeUp()).toEqual(expectedAction);
+    });
   });
 
-  it('should create an action to volume up', () => {
-    const expectedAction = {
-      type: types.VOLUME_UP,
-    };
+  describe('volumeDown', () => {
+    it('should create an action to volume dowm', () => {
+      const expectedAction = {
+        type: types.VOLUME_DOWN,
+      };
 
-    expect(actions.volumeUp()).toEqual(expectedAction);
+      expect(actions.volumeDown()).toEqual(expectedAction);
+    });
   });
 
-  it('should create an action to volume dowm', () => {
-    const expectedAction = {
-      type: types.VOLUME_DOWN,
-    };
+  describe('changeDuration', () => {
+    it('should create an action to change track duration', () => {
+      const expectedTrackObject = {
+        position: 1500,
+        duration: 30000,
+      };
 
-    expect(actions.volumeDown()).toEqual(expectedAction);
+      const expectedAction = {
+        type: types.CHANGE_TRACK_DURATION,
+        payload: expectedTrackObject,
+      };
+
+      expect(actions.changeDuration(expectedTrackObject)).toEqual(expectedAction);
+    });
   });
 
-  it('should create an action to change track duration', () => {
-    const expectedTrackObject = {
-      position: 1500,
-      duration: 30000,
-    };
+  describe('changePosition', () => {
+    it('should create an action to change track position', () => {
+      const expectedTrackObject = {
+        position: 1500,
+        duration: 30000,
+      };
 
-    const expectedAction = {
-      type: types.CHANGE_TRACK_DURATION,
-      payload: expectedTrackObject,
-    };
+      const expectedAction = {
+        type: types.CHANGE_TRACK_POSITION,
+        payload: expectedTrackObject,
+      };
 
-    expect(actions.changeDuration(expectedTrackObject)).toEqual(expectedAction);
-  });
-
-  it('should create an action to change track position', () => {
-    const expectedTrackObject = {
-      position: 1500,
-      duration: 30000,
-    };
-
-    const expectedAction = {
-      type: types.CHANGE_TRACK_POSITION,
-      payload: expectedTrackObject,
-    };
-
-    expect(actions.changePosition(expectedTrackObject)).toEqual(expectedAction);
+      expect(actions.changePosition(expectedTrackObject)).toEqual(expectedAction);
+    });
   });
 });
