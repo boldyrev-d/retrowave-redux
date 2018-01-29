@@ -2,15 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
 
-import { msToTime } from '../../utils/displayUtils';
-
-import cassette from './cassette.png';
-import cassetteReel from './cassette-reel.png';
-import prevIcon from './prev.svg';
-import nextIcon from './next.svg';
-import playIcon from './play.svg';
-import pauseIcon from './pause.svg';
-
 import {
   switchToPreviousTrack,
   switchToNextTrack,
@@ -22,6 +13,15 @@ import {
 
 import { RETRO_URL } from '../../constants/urlConstants';
 import { playStatuses } from '../../constants/playerConstants';
+
+import { msToTime } from '../../utils/displayUtils';
+
+import cassette from './cassette.png';
+import cassetteReel from './cassette-reel.png';
+import prevIcon from './prev.svg';
+import nextIcon from './next.svg';
+import playIcon from './play.svg';
+import pauseIcon from './pause.svg';
 
 const Wrapper = styled.div`
   position: relative;
