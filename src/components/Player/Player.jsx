@@ -18,7 +18,7 @@ import { playStatuses } from '../../constants/playerConstants';
 
 const Wrapper = styled.div`
   position: relative;
-  width: 600px;
+  width: 900px;
   margin: 0 auto;
   text-align: center;
 `;
