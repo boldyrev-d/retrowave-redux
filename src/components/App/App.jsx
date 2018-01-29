@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
 import Sound from 'react-sound';
 
 import Player from '../Player';
 
-import { RETRO_URL } from '../../constants/urlConstants';
-
 import { firstLoad, changeDuration, changePosition, changeVolume } from '../../AC';
+
+import { RETRO_URL } from '../../constants/urlConstants';
 
 const Wrapper = styled.div`
   display: flex;
@@ -55,29 +55,25 @@ class App extends Component {
       currentTrack, playStatus, tracks, volume,
     } = this.props;
 
-    const soundComponent = tracks.length ? (
-      <Sound
-        url={`${RETRO_URL}${tracks[currentTrack].streamUrl}`}
-        playStatus={playStatus}
-        volume={volume}
-        // FIXME: get more accuracy
-        onPlaying={this.props.changePosition}
-        onLoad={this.props.changeDuration}
-        onFinishedPlaying={this.handleNext}
-      />
-    ) : null;
-
-    const bgComponent = tracks.length ? (
-      <Background bg={`${RETRO_URL}${tracks[currentTrack].artworkUrl}`} />
-    ) : null;
-
-    const playerComponent = tracks.length ? <Player /> : null;
-
     return (
       <Wrapper>
-        {soundComponent}
-        {bgComponent}
-        {playerComponent}
+        {tracks.length !== 0 && (
+          <Fragment>
+            <Background bg={`${RETRO_URL}${tracks[currentTrack].artworkUrl}`} />
+
+            <Sound
+              url={`${RETRO_URL}${tracks[currentTrack].streamUrl}`}
+              playStatus={playStatus}
+              volume={volume}
+              // FIXME: get more accuracy
+              onPlaying={this.props.changePosition}
+              onLoad={this.props.changeDuration}
+              onFinishedPlaying={this.handleNext}
+            />
+
+            <Player />
+          </Fragment>
+        )}
       </Wrapper>
     );
   }
