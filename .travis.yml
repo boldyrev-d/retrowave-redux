@@ -11,4 +11,4 @@ deploy:
     branch: master
   provider: script
   script:
-    - yarn build && now build --public --name retrowave-redux --token $NOW_TOKEN && now alias --token $NOW_TOKEN --force
+    - yarn build && rm ./build/static/js/*.js.map && now build --public --name retrowave-redux --token $NOW_TOKEN && now alias --token $NOW_TOKEN --force
