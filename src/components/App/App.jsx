@@ -5,7 +5,9 @@ import Sound from 'react-sound';
 
 import Player from '../Player';
 
-import { firstLoad, changeDuration, changePosition, changeVolume } from '../../AC';
+import {
+  firstLoad, changeDuration, changePosition, changeVolume,
+} from '../../AC';
 
 import { RETRO_URL } from '../../constants/urlConstants';
 
@@ -34,7 +36,7 @@ const Background = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: url(${props => props.bg}) center;
+  background: url(${({ bg }) => bg}) center;
   background-color: transparent;
   background-size: cover;
   filter: blur(100px);
@@ -45,14 +47,24 @@ const Background = styled.div`
 
 class App extends Component {
   componentWillMount() {
-    if (!this.props.tracks || !this.props.tracks.length) {
-      this.props.firstLoad();
+    // eslint-disable-next-line no-shadow
+    const { tracks, firstLoad } = this.props;
+
+    if (!tracks || !tracks.length) {
+      firstLoad();
     }
   }
 
   render() {
     const {
-      currentTrack, playStatus, tracks, volume,
+      currentTrack,
+      playStatus,
+      tracks,
+      volume,
+      // eslint-disable-next-line no-shadow
+      changePosition,
+      // eslint-disable-next-line no-shadow
+      changeDuration,
     } = this.props;
 
     return (
@@ -66,8 +78,8 @@ class App extends Component {
               playStatus={playStatus}
               volume={volume}
               // FIXME: get more accuracy
-              onPlaying={this.props.changePosition}
-              onLoad={this.props.changeDuration}
+              onPlaying={changePosition}
+              onLoad={changeDuration}
               onFinishedPlaying={this.handleNext}
             />
 

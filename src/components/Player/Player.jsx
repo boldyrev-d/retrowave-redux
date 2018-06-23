@@ -43,7 +43,7 @@ const CassetteCover = styled.div`
   left: 16px;
   width: 278px;
   height: 132px;
-  background: url(${props => props.bg}) center no-repeat;
+  background: url(${({ bg }) => bg}) center no-repeat;
   background-size: cover;
   z-index: 100;
 
@@ -71,7 +71,7 @@ const CassetteBody = styled.div`
   left: 0;
   width: 310px;
   height: 195px;
-  background: url(${props => props.bg}) center no-repeat;
+  background: url(${({ bg }) => bg}) center no-repeat;
   background-size: cover;
   z-index: 100;
 `;
@@ -90,7 +90,7 @@ const ControlsButton = styled.button`
   width: 65px;
   height: 30px;
   border: 0;
-  background: url(${props => props.icon}) center no-repeat;
+  background: url(${({ icon }) => icon}) center no-repeat;
   transition: opacity 0.5s ease-in-out;
   cursor: pointer;
 
@@ -199,12 +199,11 @@ const CassetteReelLeft = styled.div`
   width: 34px;
   height: 39px;
   border-radius: 50%;
-  background: url(${props => props.image}) no-repeat;
+  background: url(${({ image }) => image}) no-repeat;
   color: #16181a;
   clip-path: circle(50% at 50% 50%);
   animation: ${spin} 4s linear infinite;
-  animation-play-state: ${props =>
-    (props.playStatus === playStatuses.pause ? 'paused' : 'running')};
+  animation-play-state: ${({ playStatus }) => (playStatus === playStatuses.pause ? 'paused' : 'running')};
 `;
 
 const CassetteReelRight = CassetteReelLeft.extend`
@@ -221,29 +220,39 @@ class Player extends Component {
   }
 
   handleKeyDown = (ev) => {
+    const {
+      /* eslint-disable no-shadow */
+      switchToNextTrack,
+      switchToPreviousTrack,
+      volumeUp,
+      volumeDown,
+      changePlayStatus,
+      /* eslint-enable no-shadow */
+    } = this.props;
+
     if (ev.key === 'ArrowRight') {
       ev.preventDefault();
-      this.props.switchToNextTrack();
+      switchToNextTrack();
     }
 
     if (ev.key === 'ArrowLeft') {
       ev.preventDefault();
-      this.props.switchToPreviousTrack();
+      switchToPreviousTrack();
     }
 
     if (ev.key === 'ArrowUp') {
       ev.preventDefault();
-      this.props.volumeUp();
+      volumeUp();
     }
 
     if (ev.key === 'ArrowDown') {
       ev.preventDefault();
-      this.props.volumeDown();
+      volumeDown();
     }
 
     if (ev.code === 'Space') {
       ev.preventDefault();
-      this.props.changePlayStatus();
+      changePlayStatus();
     }
   };
 
@@ -256,6 +265,12 @@ class Player extends Component {
       currentDuration,
       volume,
       title,
+      /* eslint-disable no-shadow */
+      switchToPreviousTrack,
+      changePlayStatus,
+      switchToNextTrack,
+      changeVolume,
+      /* eslint-enable no-shadow */
     } = this.props;
 
     return (
@@ -271,20 +286,28 @@ class Player extends Component {
           <ControlsButton
             disabled={!currentTrack}
             icon={prevIcon}
-            onClick={this.props.switchToPreviousTrack}
+            onClick={switchToPreviousTrack}
           />
           <ControlsButton
             icon={playStatus === playStatuses.play ? pauseIcon : playIcon}
-            onClick={this.props.changePlayStatus}
+            onClick={changePlayStatus}
           />
-          <ControlsButton icon={nextIcon} onClick={this.props.switchToNextTrack} />
+          <ControlsButton icon={nextIcon} onClick={switchToNextTrack} />
         </Controls>
 
-        <Title>{title}</Title>
+        <Title>
+          {title}
+        </Title>
 
         <Time>
-          <TimePosition>{msToTime(currentPosition)}</TimePosition>
-          <TimeDuration> / {msToTime(currentDuration)}</TimeDuration>
+          <TimePosition>
+            {msToTime(currentPosition)}
+          </TimePosition>
+          <TimeDuration>
+            {' '}
+            /
+            {msToTime(currentDuration)}
+          </TimeDuration>
         </Time>
 
         <Volume
@@ -295,7 +318,7 @@ class Player extends Component {
           value={volume}
           onChange={(ev) => {
             const volumeValue = parseInt(ev.target.value, 10);
-            this.props.changeVolume(volumeValue);
+            changeVolume(volumeValue);
           }}
         />
       </Wrapper>
